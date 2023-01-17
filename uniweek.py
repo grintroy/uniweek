@@ -97,9 +97,13 @@ class UniWeek():
 		self.search_input_week = rumps.Window(title="Enter the date in a format DD-MM-YYYY", message="e.g. '16-1-2023'", cancel=True, dimensions=(300, 60))
 
 		# Create two menu items: one to search for a date, and one to search for a week
-		self.search_date = rumps.MenuItem("Search for a date", callback=self.run_search_date_by_week)
-		self.search_week = rumps.MenuItem("Search for a week", callback=self.run_search_week_by_date)
-		self.app.menu = [self.search_date, self.search_week]
+		self.search_block = rumps.MenuItem("Search", callback=None)
+		self.search_date = rumps.MenuItem("    for a date", callback=self.run_search_date_by_week)
+		self.search_week = rumps.MenuItem("    for a week", callback=self.run_search_week_by_date)
+		self.schedule_block = rumps.MenuItem("Schedule", callback=None)
+		self.schedule_uni1 = rumps.MenuItem("    Surrey 22-23", callback=True)
+		self.schedule_uni1.state = True
+		self.app.menu = [self.search_block, self.search_date, self.search_week, None, self.schedule_block, self.schedule_uni1, None]
 
 		# Schedule self update to run every 5 minutes
 		self.timer = rumps.Timer(self.update, 300)
