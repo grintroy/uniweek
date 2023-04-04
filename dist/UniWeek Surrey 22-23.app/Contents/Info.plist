@@ -70,9 +70,9 @@
 	<key>PythonInfoDict</key>
 	<dict>
 		<key>PythonExecutable</key>
-		<string>/usr/local/opt/python@3.11/bin/python3.11</string>
+		<string>/opt/homebrew/opt/python@3.11/bin/python3.11</string>
 		<key>PythonLongVersion</key>
-		<string>3.11.0 (main, Oct 25 2022, 14:14:02) [Clang 13.0.0 (clang-1300.0.29.30)]</string>
+		<string>3.11.2 (main, Feb 16 2023, 02:55:59) [Clang 14.0.0 (clang-1400.0.29.202)]</string>
 		<key>PythonShortVersion</key>
 		<string>3.1</string>
 		<key>py2app</key>

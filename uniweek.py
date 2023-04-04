@@ -51,7 +51,6 @@ class Week(DateRange):
 		self.s = s
 		self.n = n
 
-
 class Year():
 	def __init__(self):
 		self.semesters = []
@@ -73,7 +72,6 @@ class Year():
 		except IndexError:
 			return None
 		return w.start + timedelta(days=dnum - 1)
-
 
 class UniWeek():
 	def __init__(self):
@@ -148,6 +146,7 @@ class UniWeek():
 		this_week = self.year.search_week_by_date(today)
 		if this_week:
 			return f"{this_week.s.name} W{this_week.n}"
+		return "BREAK"
 	
 	def run(self):
 		self.app.run()

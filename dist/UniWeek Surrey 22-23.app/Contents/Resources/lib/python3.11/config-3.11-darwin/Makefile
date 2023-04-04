@@ -31,8 +31,8 @@ MODLIBS=           $(LOCALMODLIBS) $(BASEMODLIBS)
 VERSION=	3.11
 srcdir=		.
 
-abs_srcdir=	/private/tmp/pythonA3.11-20221025-6612-1o0m2jw/Python-3.11.0
-abs_builddir=	/private/tmp/pythonA3.11-20221025-6612-1o0m2jw/Python-3.11.0
+abs_srcdir=	/private/tmp/pythonA3.11-20230215-24730-q9qa76/Python-3.11.2
+abs_builddir=	/private/tmp/pythonA3.11-20230215-24730-q9qa76/Python-3.11.2
 
 
 CC=		clang
@@ -82,20 +82,20 @@ MAKESETUP=      $(srcdir)/Modules/makesetup
 OPT=		-DNDEBUG -g -fwrapv -O3 -Wall
 BASECFLAGS=	 -Wsign-compare -Wunreachable-code -fno-common -dynamic
 BASECPPFLAGS=	
-CONFIGURE_CFLAGS=	-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
+CONFIGURE_CFLAGS=	-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk
 # CFLAGS_NODIST is used for building the interpreter and stdlib C extensions.
 # Use it when a compiler flag should _not_ be part of the distutils CFLAGS
 # once Python is installed (Issue #21121).
-CONFIGURE_CFLAGS_NODIST=-I/usr/local/include -flto -std=c11 -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wstrict-prototypes -Werror=implicit-function-declaration -fvisibility=hidden
+CONFIGURE_CFLAGS_NODIST=-I/opt/homebrew/include -flto -std=c11 -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wstrict-prototypes -Werror=implicit-function-declaration -fvisibility=hidden
 # LDFLAGS_NODIST is used in the same manner as CFLAGS_NODIST.
 # Use it when a linker flag should _not_ be part of the distutils LDFLAGS
 # once Python is installed (bpo-35257)
-CONFIGURE_LDFLAGS_NODIST=-L/usr/local/lib -Wl,-rpath,/usr/local/lib -flto -Wl,-export_dynamic -g
+CONFIGURE_LDFLAGS_NODIST=-L/opt/homebrew/lib -Wl,-rpath,/opt/homebrew/lib -flto -Wl,-export_dynamic -g
 # LDFLAGS_NOLTO is an extra flag to disable lto. It is used to speed up building
 # of _bootstrap_python and _freeze_module tools, which don't need LTO.
-CONFIGURE_LDFLAGS_NOLTO=-fno-lto
-CONFIGURE_CPPFLAGS=	-I/usr/local/include
-CONFIGURE_LDFLAGS=	-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
+CONFIGURE_LDFLAGS_NOLTO=-flto=thin
+CONFIGURE_CPPFLAGS=	-I/opt/homebrew/include
+CONFIGURE_LDFLAGS=	-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk
 # Avoid assigning CFLAGS, LDFLAGS, etc. so users can use them on the
 # command line to append to these values without stomping the pre-set
 # values.
@@ -134,13 +134,13 @@ MULTIARCH=	darwin
 MULTIARCH_CPPFLAGS = -DMULTIARCH=\"darwin\"
 
 # Install prefix for architecture-independent files
-prefix=		/usr/local/opt/python@3.11/Frameworks/Python.framework/Versions/3.11
+prefix=		/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11
 
 # Install prefix for architecture-dependent files
 exec_prefix=	${prefix}
 
 # Install prefix for data files
-datarootdir=    /usr/local/opt/python@3.11/share
+datarootdir=    /opt/homebrew/opt/python@3.11/share
 
 # Expanded directories
 BINDIR=		${exec_prefix}/bin
@@ -180,12 +180,12 @@ BUILDEXE=	.exe
 UNIVERSALSDK=
 PYTHONFRAMEWORK=	Python
 PYTHONFRAMEWORKDIR=	Python.framework
-PYTHONFRAMEWORKPREFIX=	/usr/local/opt/python@3.11/Frameworks
-PYTHONFRAMEWORKINSTALLDIR= /usr/local/opt/python@3.11/Frameworks/Python.framework
+PYTHONFRAMEWORKPREFIX=	/opt/homebrew/opt/python@3.11/Frameworks
+PYTHONFRAMEWORKINSTALLDIR= /opt/homebrew/opt/python@3.11/Frameworks/Python.framework
 # Deployment target selected during configure, to be checked
 # by distutils. The export statement is needed to ensure that the
 # deployment target is active during build.
-MACOSX_DEPLOYMENT_TARGET=11
+MACOSX_DEPLOYMENT_TARGET=13
 export MACOSX_DEPLOYMENT_TARGET
 
 # Option to install to strip binaries
@@ -201,7 +201,7 @@ LIPO_INTEL64_FLAGS=
 OTHER_LIBTOOL_OPT=
 
 # Environment to run shared python without installed libraries
-RUNSHARED=       DYLD_FRAMEWORK_PATH=/private/tmp/pythonA3.11-20221025-6612-1o0m2jw/Python-3.11.0
+RUNSHARED=       DYLD_FRAMEWORK_PATH=/private/tmp/pythonA3.11-20230215-24730-q9qa76/Python-3.11.2
 
 # ensurepip options
 ENSUREPIP=      no
@@ -211,9 +211,9 @@ LIBMPDEC_A= Modules/_decimal/libmpdec/libmpdec.a
 LIBEXPAT_A= Modules/expat/libexpat.a
 
 # OpenSSL options for setup.py so sysconfig can pick up AC_SUBST() vars.
-OPENSSL_INCLUDES=-I/usr/local/opt/openssl@1.1/include
+OPENSSL_INCLUDES=-I/opt/homebrew/opt/openssl@1.1/include
 OPENSSL_LIBS=-lssl -lcrypto
-OPENSSL_LDFLAGS=-L/usr/local/opt/openssl@1.1/lib
+OPENSSL_LDFLAGS=-L/opt/homebrew/opt/openssl@1.1/lib
 OPENSSL_RPATH=
 
 # Module state, compiler flags and linker flags
@@ -301,15 +301,15 @@ MODULE__CRYPT_STATE=yes
 MODULE__CRYPT_CFLAGS=
 MODULE__CRYPT_LDFLAGS=
 MODULE__DECIMAL_STATE=yes
-MODULE__DECIMAL_CFLAGS= -DCONFIG_64=1 -DASM=1
+MODULE__DECIMAL_CFLAGS= -DCONFIG_64=1 -DANSI=1 -DHAVE_UINT128_T=1
 MODULE__DECIMAL_LDFLAGS=-lmpdec
 MODULE__GDBM_STATE=disabled
 MODULE_NIS_STATE=yes
 MODULE_NIS_CFLAGS=
 MODULE_NIS_LDFLAGS=
 MODULE__SQLITE3_STATE=yes
-MODULE__SQLITE3_CFLAGS=-I/usr/local/Cellar/sqlite/3.39.4/include -I$(srcdir)/Modules/_sqlite
-MODULE__SQLITE3_LDFLAGS=-L/usr/local/Cellar/sqlite/3.39.4/lib -lsqlite3
+MODULE__SQLITE3_CFLAGS=-I/opt/homebrew/Cellar/sqlite/3.40.1/include -I$(srcdir)/Modules/_sqlite
+MODULE__SQLITE3_LDFLAGS=-L/opt/homebrew/Cellar/sqlite/3.40.1/lib -lsqlite3
 MODULE__TKINTER_STATE=missing
 MODULE__UUID_STATE=yes
 MODULE__UUID_CFLAGS=
@@ -324,15 +324,16 @@ MODULE__BZ2_STATE=yes
 MODULE__BZ2_CFLAGS=
 MODULE__BZ2_LDFLAGS=-lbz2
 MODULE__LZMA_STATE=yes
-MODULE__LZMA_CFLAGS=-I/usr/local/Cellar/xz/5.2.7/include
-MODULE__LZMA_LDFLAGS=-L/usr/local/Cellar/xz/5.2.7/lib -llzma
+MODULE__LZMA_CFLAGS=-I/opt/homebrew/Cellar/xz/5.4.1/include
+MODULE__LZMA_LDFLAGS=-L/opt/homebrew/Cellar/xz/5.4.1/lib -llzma
 MODULE__SSL_STATE=yes
-MODULE__SSL_CFLAGS=-I/usr/local/opt/openssl@1.1/include
-MODULE__SSL_LDFLAGS=-L/usr/local/opt/openssl@1.1/lib  -lssl -lcrypto
+MODULE__SSL_CFLAGS=-I/opt/homebrew/opt/openssl@1.1/include
+MODULE__SSL_LDFLAGS=-L/opt/homebrew/opt/openssl@1.1/lib  -lssl -lcrypto
 MODULE__HASHLIB_STATE=yes
-MODULE__HASHLIB_CFLAGS=-I/usr/local/opt/openssl@1.1/include
-MODULE__HASHLIB_LDFLAGS=-L/usr/local/opt/openssl@1.1/lib   -lcrypto
+MODULE__HASHLIB_CFLAGS=-I/opt/homebrew/opt/openssl@1.1/include
+MODULE__HASHLIB_LDFLAGS=-L/opt/homebrew/opt/openssl@1.1/lib   -lcrypto
 MODULE__TESTCAPI_STATE=yes
+MODULE__TESTCLINIC_STATE=yes
 MODULE__TESTINTERNALCAPI_STATE=yes
 MODULE__TESTBUFFER_STATE=yes
 MODULE__TESTIMPORTMULTIPLE_STATE=yes
@@ -354,7 +355,7 @@ EXEMODE=	755
 FILEMODE=	644
 
 # configure script arguments
-CONFIG_ARGS=	 '--prefix=/usr/local/opt/python@3.11' '--enable-ipv6' '--datarootdir=/usr/local/opt/python@3.11/share' '--datadir=/usr/local/opt/python@3.11/share' '--without-ensurepip' '--enable-loadable-sqlite-extensions' '--with-openssl=/usr/local/opt/openssl@1.1' '--enable-optimizations' '--with-system-expat' '--with-system-ffi' '--with-system-libmpdec' '--with-readline=editline' '--with-lto' '--enable-framework=/usr/local/opt/python@3.11/Frameworks' '--with-dtrace' '--with-dbmliborder=ndbm' 'MACOSX_DEPLOYMENT_TARGET=11' 'CFLAGS=-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk' 'CFLAGS_NODIST=-I/usr/local/include' 'LDFLAGS=-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk' 'LDFLAGS_NODIST=-L/usr/local/lib -Wl,-rpath,/usr/local/lib' 'CPPFLAGS=-I/usr/local/include' 'py_cv_module__tkinter=disabled' 'PKG_CONFIG_PATH=/usr/local/opt/openssl@1.1/lib/pkgconfig:/usr/local/opt/readline/lib/pkgconfig:/usr/local/opt/sqlite/lib/pkgconfig:/usr/local/opt/xz/lib/pkgconfig' 'PKG_CONFIG_LIBDIR=/usr/lib/pkgconfig:/usr/local/Homebrew/Library/Homebrew/os/mac/pkgconfig/11' 'CC=clang'
+CONFIG_ARGS=	 '--prefix=/opt/homebrew/opt/python@3.11' '--enable-ipv6' '--datarootdir=/opt/homebrew/opt/python@3.11/share' '--datadir=/opt/homebrew/opt/python@3.11/share' '--without-ensurepip' '--enable-loadable-sqlite-extensions' '--with-openssl=/opt/homebrew/opt/openssl@1.1' '--enable-optimizations' '--with-system-expat' '--with-system-ffi' '--with-system-libmpdec' '--with-readline=editline' '--with-lto' '--enable-framework=/opt/homebrew/opt/python@3.11/Frameworks' '--with-dtrace' '--with-dbmliborder=ndbm' 'MACOSX_DEPLOYMENT_TARGET=13' 'CFLAGS=-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk' 'CFLAGS_NODIST=-I/opt/homebrew/include' 'LDFLAGS=-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk' 'LDFLAGS_NODIST=-L/opt/homebrew/lib -Wl,-rpath,/opt/homebrew/lib' 'CPPFLAGS=-I/opt/homebrew/include' 'py_cv_module__tkinter=disabled' 'PKG_CONFIG_PATH=/opt/homebrew/opt/openssl@1.1/lib/pkgconfig:/opt/homebrew/opt/readline/lib/pkgconfig:/opt/homebrew/opt/sqlite/lib/pkgconfig:/opt/homebrew/opt/xz/lib/pkgconfig' 'PKG_CONFIG_LIBDIR=/usr/lib/pkgconfig:/opt/homebrew/Library/Homebrew/os/mac/pkgconfig/13' 'CC=clang'
 
 
 # Subdirectories with code
@@ -421,8 +422,8 @@ FREEZE_MODULE=$(PYTHON_FOR_FREEZE) $(srcdir)/Programs/_freeze_module.py
 FREEZE_MODULE_DEPS=_bootstrap_python $(srcdir)/Programs/_freeze_module.py
 
 _PYTHON_HOST_PLATFORM=
-BUILD_GNU_TYPE=	x86_64-apple-darwin20.6.0
-HOST_GNU_TYPE=	x86_64-apple-darwin20.6.0
+BUILD_GNU_TYPE=	aarch64-apple-darwin22.3.0
+HOST_GNU_TYPE=	aarch64-apple-darwin22.3.0
 
 # The task to run while instrumented when building the profile-opt target.
 # To speed up profile generation, we don't run the full unit test suite
@@ -472,7 +473,7 @@ IO_OBJS=	\
 
 ##########################################################################
 
-LIBFFI_INCLUDEDIR=	/Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk/usr/include/ffi
+LIBFFI_INCLUDEDIR=	/Library/Developer/CommandLineTools/SDKs/MacOSX13.sdk/usr/include/ffi
 
 ##########################################################################
 # Parser
@@ -946,10 +947,11 @@ $(DLLLIBRARY) libpython$(LDVERSION).dll.a: $(LIBRARY_OBJS)
 # wasm assets directory is relative to current build dir, e.g. "./usr/local".
 # --preload-file turns a relative asset path into an absolute path.
 
+.PHONY: wasm_stdlib
+wasm_stdlib: $(WASM_STDLIB)
 $(WASM_STDLIB): $(srcdir)/Lib/*.py $(srcdir)/Lib/*/*.py \
 	    $(srcdir)/Tools/wasm/wasm_assets.py \
-	    Makefile pybuilddir.txt Modules/Setup.local \
-	    python.html python.worker.js
+	    Makefile pybuilddir.txt Modules/Setup.local
 	$(PYTHON_FOR_BUILD) $(srcdir)/Tools/wasm/wasm_assets.py \
 	    --buildroot . --prefix $(prefix)
 
@@ -961,10 +963,10 @@ python.worker.js: $(srcdir)/Tools/wasm/python.worker.js
 
 ##########################################################################
 # Build static libmpdec.a
-LIBMPDEC_CFLAGS= -DCONFIG_64=1 -DASM=1 $(PY_STDMODULE_CFLAGS) $(CCSHARED)
+LIBMPDEC_CFLAGS= -DCONFIG_64=1 -DANSI=1 -DHAVE_UINT128_T=1 $(PY_STDMODULE_CFLAGS) $(CCSHARED)
 
 # for setup.py
-DECIMAL_CFLAGS= -DCONFIG_64=1 -DASM=1
+DECIMAL_CFLAGS= -DCONFIG_64=1 -DANSI=1 -DHAVE_UINT128_T=1
 DECIMAL_LDFLAGS=-lmpdec
 
 # "%.o: %c" is not portable
@@ -1842,6 +1844,10 @@ buildbottest: all
 		fi
 		$(TESTRUNNER) -j 1 -u all -W --slowest --fail-env-changed --timeout=$(TESTTIMEOUT) $(TESTOPTS)
 
+# Like testall, but run Python tests with HOSTRUNNER directly.
+hostrunnertest: all
+	$(RUNSHARED) $(HOSTRUNNER) ./$(BUILDPYTHON) -m test -u all $(TESTOPTS)
+
 pythoninfo: all
 		$(RUNSHARED) $(HOSTRUNNER) ./$(BUILDPYTHON) -m test.pythoninfo
 
@@ -2128,6 +2134,7 @@ TESTSUBDIRS=	ctypes/test \
 		test/test_warnings test/test_warnings/data \
 		test/test_zoneinfo test/test_zoneinfo/data \
 		test/tracedmodules \
+		test/typinganndata \
 		test/xmltestdata test/xmltestdata/c14n-20 \
 		test/ziptestdata \
 		tkinter/test tkinter/test/test_tkinter \
@@ -2512,8 +2519,7 @@ rmtestturds:
 	-rm -f gb-18030-2000.xml
 
 docclean:
-	-rm -rf Doc/build
-	-rm -rf Doc/tools/sphinx Doc/tools/pygments Doc/tools/docutils
+	$(MAKE) -C $(srcdir)/Doc clean
 
 # like the 'clean' target but retain the profile guided optimization (PGO)
 # data.  The PGO data is only valid if source code remains unchanged.
@@ -2564,7 +2570,7 @@ clobber: clean
 # Make things extra clean, before making a distribution:
 # remove all generated files, even Makefile[.pre]
 # Keep configure and Python-ast.[ch], it's possible they can't be generated
-distclean: clobber
+distclean: clobber docclean
 	for file in $(srcdir)/Lib/test/data/* ; do \
 	    if test "$$file" != "$(srcdir)/Lib/test/data/README"; then rm "$$file"; fi; \
 	done
@@ -2652,12 +2658,12 @@ Python/thread.o:  $(srcdir)/Python/thread_nt.h $(srcdir)/Python/thread_pthread.h
 
 MODULE_CMATH_DEPS=$(srcdir)/Modules/_math.h
 MODULE_MATH_DEPS=$(srcdir)/Modules/_math.h
-MODULE_PYEXPAT_DEPS=$(LIBEXPAT_HEADERS) 
+MODULE_PYEXPAT_DEPS=
 MODULE_UNICODEDATA_DEPS=$(srcdir)/Modules/unicodedata_db.h $(srcdir)/Modules/unicodename_db.h
 MODULE__BLAKE2_DEPS=$(srcdir)/Modules/_blake2/impl/blake2-config.h $(srcdir)/Modules/_blake2/impl/blake2-impl.h $(srcdir)/Modules/_blake2/impl/blake2.h $(srcdir)/Modules/_blake2/impl/blake2b-load-sse2.h $(srcdir)/Modules/_blake2/impl/blake2b-load-sse41.h $(srcdir)/Modules/_blake2/impl/blake2b-ref.c $(srcdir)/Modules/_blake2/impl/blake2b-round.h $(srcdir)/Modules/_blake2/impl/blake2b.c $(srcdir)/Modules/_blake2/impl/blake2s-load-sse2.h $(srcdir)/Modules/_blake2/impl/blake2s-load-sse41.h $(srcdir)/Modules/_blake2/impl/blake2s-load-xop.h $(srcdir)/Modules/_blake2/impl/blake2s-ref.c $(srcdir)/Modules/_blake2/impl/blake2s-round.h $(srcdir)/Modules/_blake2/impl/blake2s.c $(srcdir)/Modules/_blake2/blake2module.h $(srcdir)/Modules/hashlib.h
 MODULE__CTYPES_DEPS=$(srcdir)/Modules/_ctypes/ctypes.h
-MODULE__DECIMAL_DEPS=$(srcdir)/Modules/_decimal/docstrings.h $(LIBMPDEC_HEADERS) 
-MODULE__ELEMENTTREE_DEPS=$(srcdir)/Modules/pyexpat.c $(LIBEXPAT_HEADERS) 
+MODULE__DECIMAL_DEPS=$(srcdir)/Modules/_decimal/docstrings.h 
+MODULE__ELEMENTTREE_DEPS=$(srcdir)/Modules/pyexpat.c 
 MODULE__HASHLIB_DEPS=$(srcdir)/Modules/hashlib.h
 MODULE__IO_DEPS=$(srcdir)/Modules/_io/_iomodule.h
 MODULE__MD5_DEPS=$(srcdir)/Modules/hashlib.h
