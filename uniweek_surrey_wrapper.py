@@ -5,10 +5,11 @@ OPTIONS = {
     'argv_emulation': False,
     'iconfile': 'uniweek_surrey.icns',
     'plist': {
-        'CFBundleShortVersionString': '0.2',
+        'CFBundleShortVersionString': '0.2.1',
         'LSUIElement': True,
     },
     'packages': ['rumps', 'datetime', 'json'],
+    'arch': 'universal2'
 }
 setup(
     app=APP,
